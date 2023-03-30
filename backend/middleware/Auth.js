@@ -20,7 +20,7 @@ export const isAuthenticatedUser = catchAsync(async (req, res, next) => {
 
 // authorizeroles
 
-export const AuthorizeRoles=(...roles)=>{
+export const AuthorizeRoles =(...roles)=>{
 
   return(req,res,next)=>{
      if(!roles.includes(req.user.role)){

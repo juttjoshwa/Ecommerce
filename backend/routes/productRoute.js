@@ -1,8 +1,11 @@
 import express from "express";
 import getAllproducts, {
   createProduct,
+  createProductReview,
   deleteProduct,
+  deleteReviews,
   GetProductDetails,
+  getProductReviews,
   updateProduct,
 } from "../controller/productController.js";
 import { AuthorizeRoles, isAuthenticatedUser } from "../middleware/Auth.js";
@@ -11,17 +14,17 @@ import { AuthorizeRoles, isAuthenticatedUser } from "../middleware/Auth.js";
 const router = express.Router();
 router.route("/products").get(getAllproducts);
 router
-  .route("/products/new")
-  .post(
-    isAuthenticatedUser,
-    AuthorizeRoles("admin"),
-    isAuthenticatedUser,
-    createProduct
-  );
+  .route("/admin/products/new")
+  .post(isAuthenticatedUser, AuthorizeRoles("admin"), createProduct);
 router
-  .route("/products/:id")
-  .put(isAuthenticatedUser,AuthorizeRoles("admin"), updateProduct)
-  .delete(isAuthenticatedUser,AuthorizeRoles("admin") , deleteProduct)
-  .get(GetProductDetails);
+  .route("/admin/products/:id")
+  .put(isAuthenticatedUser, AuthorizeRoles("admin"), updateProduct)
+  .delete(isAuthenticatedUser, AuthorizeRoles("admin"), deleteProduct);
+router.route("/products/:id").get(GetProductDetails);
+router.route("/review").put(isAuthenticatedUser, createProductReview);
+router
+  .route("/reviews")
+  .get(getProductReviews)
+  .delete(isAuthenticatedUser, deleteReviews);
 
 export default router;
